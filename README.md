@@ -1,2 +1,3 @@
 # My-First-Project
-my first UI/UX project
+this is my step learning github aand UI/UXdesign.
+More updates coming soon!
