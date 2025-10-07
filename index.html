@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DM&Styles</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background: #f4f4f4; }
+        header { background: #333; color: #fff; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { font-size: 24px; }
+        nav a { color: #fff; margin-left: 15px; text-decoration: none; font-weight: bold; }
+        .hero { background: url('https://via.placeholder.com/1200x400') center/cover no-repeat; height: 400px; display: flex; justify-content: center; align-items: center; color: #fff; font-size: 36px; font-weight: bold; }
+        .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 20px; }
+        .product { background: #fff; padding: 10px; border-radius: 5px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .product img { max-width: 100%; border-radius: 5px; }
+        .product h3 { margin: 10px 0; }
+        .product p { color: #555; }
+        .product button { padding: 5px 10px; background: #333; color: #fff; border: none; border-radius: 3px; cursor: pointer; }
+        .cart { padding: 20px; }
+        .cart h2 { margin-bottom: 10px; }
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 10px; background: #fff; padding: 10px; border-radius: 5px; }
+        footer { background: #333; color: #fff; text-align: center; padding: 15px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DM&Styles</h1>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#products">Products</a>
+            <a href="#cart">Cart</a>
+            <a href="#about">About</a>
+        </nav>
+    </header>
+
+    <section class="hero">Welcome to DM&Styles</section>
+
+    <section class="products" id="products">
+        <!-- Products will be added by JS -->
+    </section>
+
+    <section class="cart" id="cart">
+        <h2>Cart</h2>
+        <div id="cart-items">Your cart is empty.</div>
+        <p id="total"></p>
+    </section>
+
+    <footer>
+        &copy; 2025 DM&Styles. All Rights Reserved.
+    </footer>
+
+    <script>
+        const products = [
+            {id:1, name:'Product 1', price:499, img:'https://via.placeholder.com/200'},
+            {id:2, name:'Product 2', price:799, img:'https://via.placeholder.com/200'},
+            {id:3, name:'Product 3', price:299, img:'https://via.placeholder.com/200'},
+            {id:4, name:'Product 4', price:999, img:'https://via.placeholder.com/200'}
+        ];
+
+        const cart = [];
+
+        const productsContainer = document.querySelector('.products');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const totalContainer = document.getElementById('total');
+
+        function displayProducts() {
+            products.forEach(product => {
+                const div = document.createElement('div');
+                div.className = 'product';
+                div.innerHTML = `
+                    <img src='${product.img}' alt='${product.name}'>
+                    <h3>${product.name}</h3>
+                    <p>₹${product.price}</p>
+                    <button onclick='addToCart(${product.id})'>Add to Cart</button>
+                `;
+                productsContainer.appendChild(div);
+            });
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push(product);
+            displayCart();
+        }
+
+        function displayCart() {
+            if(cart.length === 0){
+                cartItemsContainer.innerHTML = 'Your cart is empty.';
+                totalContainer.innerHTML = '';
+                return;
+            }
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                const div = document.createElement('div');
+                div.className = 'cart-item';
+                div.innerHTML = `
+                    <span>${item.name} - ₹${item.price}</span>
+                    <button onclick='removeFromCart(${index})'>Remove</button>
+                `;
+                cartItemsContainer.appendChild(div);
+            });
+            totalContainer.innerHTML = `<strong>Total: ₹${total}</strong>`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index,1);
+            displayCart();
+        }
+
+        displayProducts();
+        displayCart();
+    </script>
+</body>
+</html>
